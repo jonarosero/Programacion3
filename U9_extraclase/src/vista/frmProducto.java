@@ -16,6 +16,7 @@ public class frmProducto extends javax.swing.JFrame {
      */
     public frmProducto() {
         initComponents();
+        
     }
 
     /**
