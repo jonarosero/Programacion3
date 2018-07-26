@@ -10,17 +10,18 @@ package Clases;
  * @author USUARIO
  */
 public class Cliente {
-    private int cedula;
+    private String cedula;
     private String apellidos;
     private String nombres;
 
-    public int getCedula() {
+    public String getCedula() {
         return cedula;
     }
 
-    public void setCedula(int cedula) {
+    public void setCedula(String cedula) {
         this.cedula = cedula;
     }
+
 
     public String getApellidos() {
         return apellidos;

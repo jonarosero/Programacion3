@@ -18,28 +18,30 @@ import java.sql.Statement;
 public class DATCliente {
     private ConexionMysql conecta = new ConexionMysql();
     
-    public ResultSet ObtenerCuenta(int numero)throws ClassNotFoundException, SQLException{
+    public ResultSet obtenerClienteCedula(String cedula) throws SQLException, ClassNotFoundException{
+        String sql = "SELECT c.id_cliente, c.cedula, c.apellidos, c.nombres, c.fecha_nacimiento, "
+                + "pr.id provincia_res, cr.canton canton_res, c.calle_residencia calle_res, "
+                + "pt.id provincia_tra, ct.id_canton canton_tra, c.calle_trabajo calle_tra "
+                + "FROM cliente c, provincia pr, canton cr, provincia pt, canton ct "
+                + "WHERE c.provincia_residencia = pr.id "
+                + "AND c.canton_residencia = cr.id_canton "
+                + "AND c.provincia_trabajo = pt.id "
+                + "AND c.canton_trabajo = ct.id_canton "
+                + "AND c.cedula = "+cedula;
         Statement consulta = conecta.getConexion().createStatement();
-        String sql = "SELECT c.id_cuenta c.numero, c.tipo, c.fecha, t.cedula, t.nombre, t.apellido FROM cuenta c, titular t WHERE c.id_cuenta = t.id_cuenta AND c.id_cuenta = '"+numero+"'";
         return consulta.executeQuery(sql);
     }
     
-    public ResultSet ObtenerTitular(int cedula)throws ClassNotFoundException, SQLException{
+    public ResultSet obtenerProvinvia() throws SQLException, ClassNotFoundException{
         Statement consulta = conecta.getConexion().createStatement();
-        String sql = "SELECT t.cedula, t.nombre, t.apellido FROM titular t WHERE t.cedula = '"+cedula+"'";
+        String sql = "SELECT * FROM provincia";
         return consulta.executeQuery(sql);
     }
     
-    public boolean NuevaCuenta(Cuenta cuenta)throws ClassNotFoundException, SQLException{
+    public ResultSet obtenerCanton(int IdProvincia) throws SQLException, ClassNotFoundException{
         Statement consulta = conecta.getConexion().createStatement();
-        String sql = "INSERT INTO cuenta(numero, tipo, fecha) VALUES ('"+cuenta.getNumero()+"', '"+cuenta.getTipo()+"', "+cuenta.getFecha()+"')";
-        return consulta.execute(sql);
-    }
-    
-    public boolean AgregarCliente(Cliente cliente, int id)throws ClassNotFoundException, SQLException{
-        Statement consulta = conecta.getConexion().createStatement();
-        String sql = "INSERT INTO titular(id_cuenta, cedula, nombre, apellido) VALUES ('"+id+"', '"+cliente.getCedula()+"', '"+cliente.getNombres()+"', '"+cliente.getApellidos()+"' )";
-        return consulta.execute(sql);
+        String sql = "SELECT * FROM canton WHERE id = "+IdProvincia;
+        return consulta.executeQuery(sql);
     }
     
 }

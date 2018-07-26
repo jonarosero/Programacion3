@@ -5,7 +5,7 @@
  */
 package u11_extraclase;
 
-import GUICuentas.frmCliente;
+import GUICuentas.frmCuenta;
 
 /**
  *
@@ -17,7 +17,7 @@ public class U11_extraclase {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        frmCliente frm = new frmCliente();
+        frmCuenta frm = new frmCuenta();
         frm.setVisible(true);
     }
     

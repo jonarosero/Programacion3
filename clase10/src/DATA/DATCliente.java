@@ -5,6 +5,7 @@
  */
 package DATA;
 
+import clases.Cliente;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,32 +15,70 @@ import java.sql.Statement;
  * @author USUARIO
  */
 public class DATCliente {
-    private Conexion conecta = new Conexion();
+    private ConexionMysql conecta = new ConexionMysql();
     
-    public ResultSet obtenerClienteCedula(String cedula) throws SQLException, ClassNotFoundException{
-        String sql = "SELECT c.id_cliente, c.cedula, c.apellidos, c.nombres, c.fecha_nacimiento, "
-                + "pr.id provincia_res, cr.canton canton_res, c.calle_residencia calle_res, "
-                + "pt.id provincia_tra, ct.id_canton canton_tra, c.calle_trabajo calle_tra "
-                + "FROM cliente c, provincia pr, canton cr, provincia pt, canton ct "
-                + "WHERE c.provincia_residencia = pr.id "
-                + "AND c.canton_residencia = cr.id_canton "
-                + "AND c.provincia_trabajo = pt.id "
-                + "AND c.canton_trabajo = ct.id_canton "
-                + "AND c.cedula = "+cedula;
+    public ResultSet ObtenerProvincia() throws ClassNotFoundException, SQLException {
         Statement consulta = conecta.getConexion().createStatement();
+        String sql = "SELECT * FROM Provincia";
         return consulta.executeQuery(sql);
     }
     
-    public ResultSet obtenerProvinvia() throws SQLException, ClassNotFoundException{
+    public ResultSet ObtenerCanton(int IdProvincia) throws ClassNotFoundException, SQLException {
         Statement consulta = conecta.getConexion().createStatement();
-        String sql = "SELECT * FROM provincia";
+        String sql = "SELECT * FROM canton WHERE id_provincia = " + IdProvincia;
         return consulta.executeQuery(sql);
     }
     
-    public ResultSet obtenerCanton(int IdProvincia) throws SQLException, ClassNotFoundException{
+    public ResultSet ObtenerClienteCed(String Cedula) throws ClassNotFoundException, SQLException {
         Statement consulta = conecta.getConexion().createStatement();
-        String sql = "SELECT * FROM canton WHERE id = "+IdProvincia;
+        String sql = "SELECT cedula, apellidos, nombres, fecha_nacimiento, " +
+                        "pr.provincia provincia_res, cr.canton canton_res, " +
+                        "calle_res, pt.provincia provincia_tra, ct.canton canton_tra, " +
+                        "calle_tra " +
+                    "FROM Cliente c, Provincia pr, Canton cr, Provincia pt, Canton ct " +
+                    "WHERE c.provincia_res = pr.id_provincia " +
+                    "AND c.canton_res = cr.id_canton " +
+                    "AND c.provincia_tra = pt.id_provincia " +
+                    "AND c.canton_tra = ct.id_canton " +
+                    "AND c.cedula = '" + Cedula + "'";
         return consulta.executeQuery(sql);
+    }
+    
+    public boolean NuevoCliente(Cliente cli, int IdProR, int IdCanR, int IdProT, int IdCanT) throws ClassNotFoundException, SQLException {
+        Statement consulta = conecta.getConexion().createStatement();
+        String sql = "INSERT INTO cliente (cedula, apellidos, nombres, " +
+                        "fecha_nacimiento, provincia_res, " +
+                        "canton_res, calle_res, " +
+                        "provincia_tra, canton_tra, calle_tra) " +
+                        "VALUES ('" + cli.getCedula() + "', '" +
+                        cli.getApellidos() + "', '" + cli.getNombres() + "', '" +
+                        cli.getFechaNacimiento() + "', " + IdProR + ", " +
+                        IdCanR + ", '" + cli.getLugarResidencia().getCalle() + "', " +
+                        IdProT + ", " + IdCanT + ", '" +
+                        cli.getLugarTrabajo().getCalle() + "')";
+        return consulta.execute(sql);
+    }
+    
+    public boolean ModificarCliente(Cliente cli, int IdProR, int IdCanR, int IdProT, int IdCanT, String Ced) throws ClassNotFoundException, SQLException {
+        Statement consulta = conecta.getConexion().createStatement();
+        String sql = "UPDATE cliente SET cedula = '" + cli.getCedula() + "', " +
+            "apellidos = '" + cli.getApellidos() + "', " +
+            "nombres = '" + cli.getNombres() + "', " +
+            "fecha_nacimiento = '" + cli.getFechaNacimiento() + "', " +
+            "provincia_res = " + IdProR + ", " +
+            "canton_res = " + IdCanR + ", " +
+            "calle_res = '" + cli.getLugarResidencia().getCalle() + "', " +
+            "provincia_tra = " + IdProT + ", " +
+            "canton_tra = " + IdCanT + ", " +
+            "calle_tra = '" + cli.getLugarTrabajo().getCalle() + "'" +
+            "WHERE cedula = '" + Ced + "'";
+        return consulta.execute(sql);
+    }
+    
+    public boolean EliminarCliente(String Cedula) throws ClassNotFoundException, SQLException {
+        Statement consulta = conecta.getConexion().createStatement();
+        String sql = "DELETE FROM cliente WHERE cedula = '" + Cedula + "'";
+        return consulta.execute(sql);
     }
     
     

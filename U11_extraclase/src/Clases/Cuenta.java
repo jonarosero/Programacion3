@@ -5,6 +5,7 @@
  */
 package Clases;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -12,34 +13,64 @@ import java.util.Date;
  * @author USUARIO
  */
 public class Cuenta {
-    private int numero;
-    private Date fecha;
-    private String tipo;
+    private String NumeroCta;
+    private Date FechaApertura;
+    private String TipoCta;
+    private String EstadoCta;
+    private double Saldo;
+    private ArrayList<Cliente> TitularCta;
 
-    public int getNumero() {
-        return numero;
+    public String getNumeroCta() {
+        return NumeroCta;
     }
 
-    public void setNumero(int numero) {
-        this.numero = numero;
+    public void setNumeroCta(String NumeroCta) {
+        this.NumeroCta = NumeroCta;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Date getFechaApertura() {
+        return FechaApertura;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setFechaApertura(Date FechaApertura) {
+        this.FechaApertura = FechaApertura;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getTipoCta() {
+        return TipoCta;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoCta(String TipoCta) {
+        this.TipoCta = TipoCta;
     }
-    
-    
+
+    public String getEstadoCta() {
+        return EstadoCta;
+    }
+
+    public void setEstadoCta(String EstadoCta) {
+        this.EstadoCta = EstadoCta;
+    }
+
+    public double getSaldo() {
+        return Saldo;
+    }
+
+    public void setSaldo(double Saldo) {
+        this.Saldo = Saldo;
+    }
+
+    public ArrayList<Cliente> getTitularCta() {
+        return TitularCta;
+    }
+
+    public void setTitularCta(ArrayList<Cliente> TitularCta) {
+        this.TitularCta = TitularCta;
+    }
+
+    @Override
+    public String toString() {
+        return this.TipoCta;
+    }
     
 }
